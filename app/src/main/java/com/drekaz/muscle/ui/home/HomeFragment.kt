@@ -6,26 +6,34 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.drekaz.muscle.R
 
 class HomeFragment : Fragment() {
-
-    private lateinit var homeViewModel: HomeViewModel
+    companion object {
+        private const val TAG = "HomeFragment"
+    }
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_home, container, false)
-        val textView: TextView = root.findViewById(R.id.text_home)
-        homeViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
-        return root
+        return inflater.inflate(R.layout.fragment_home, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val normalText : TextView = view.findViewById(R.id.normal_mode)
+        normalText.setOnClickListener{
+            /*val transaction = activity?.supportFragmentManager?.beginTransaction()?.apply {
+                replace(R.id.container, TrainingMenuFragment())
+                addToBackStack(null)
+            }*/
+            findNavController().navigate(R.id.action_home_menu)
+        }
+        val coopText : TextView = view.findViewById(R.id.coop_mode)
+        val battleText : TextView = view.findViewById(R.id.battle_mode)
     }
 }
