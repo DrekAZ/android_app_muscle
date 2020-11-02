@@ -1,4 +1,4 @@
-package com.drekaz.muscle.ui.dashboard
+package com.drekaz.muscle.ui.setting
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,19 +10,19 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.drekaz.muscle.R
 
-class DashboardFragment : Fragment() {
+class SettingFragment : Fragment() {
 
-    private lateinit var dashboardViewModel: DashboardViewModel
+    private lateinit var settingViewModel: SettingViewModel
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        dashboardViewModel = ViewModelProvider.NewInstanceFactory().create(DashboardViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_dashboard, container, false)
-        val textView: TextView = root.findViewById(R.id.text_dashboard)
-        dashboardViewModel.text.observe(viewLifecycleOwner, Observer {
+        settingViewModel = ViewModelProvider.NewInstanceFactory().create(SettingViewModel::class.java)
+        val root = inflater.inflate(R.layout.fragment_setting, container, false)
+        val textView: TextView = root.findViewById(R.id.text_setting)
+        settingViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
         return root
