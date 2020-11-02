@@ -9,7 +9,18 @@
         android:id="@+id/navigation_home"
         android:name="com.drekaz.muscle.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_home_menu"
+            app:destination="@id/fragment_training_menu"
+            app:popUpTo="@id/navigation_home"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_training_menu"
+        android:name="com.drekaz.muscle.ui.training_menu.TrainingMenuFragment"
+        tools:layout="@layout/fragment_training_menu">
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_dashboard"
@@ -18,8 +29,8 @@
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.drekaz.muscle.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_setting"
+        android:name="com.drekaz.muscle.ui.setting.SettingFragment"
+        android:label="@string/title_setting"
+        tools:layout="@layout/fragment_setting" />
 </navigation>
