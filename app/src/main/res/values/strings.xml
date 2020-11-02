@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">Muscle</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_home">トレーニング</string>
+    <string name="title_dashboard">ダッシュボード</string>
+    <string name="title_setting">設定</string>
+
+    <string name="normal_mode">一人でトレーニング</string>
+    <string name="coop_mode">協力トレーニング</string>
+    <string name="battle_mode">対戦トレーニング</string>
 </resources>
