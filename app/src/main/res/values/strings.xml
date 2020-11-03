@@ -7,4 +7,6 @@
     <string name="normal_mode">一人でトレーニング</string>
     <string name="coop_mode">協力トレーニング</string>
     <string name="battle_mode">対戦トレーニング</string>
+
+    <string name="desc_pushup">TEST</string>
 </resources>
