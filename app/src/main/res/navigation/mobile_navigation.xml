@@ -20,6 +20,16 @@
         android:id="@+id/fragment_training_menu"
         android:name="com.drekaz.muscle.ui.training_menu.TrainingMenuFragment"
         tools:layout="@layout/fragment_training_menu">
+        <action
+            android:id="@+id/action_menu_training"
+            app:destination="@id/fragment_training"
+            app:popUpTo="@id/navigation_home"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_training"
+        android:name="com.drekaz.muscle.ui.training.TrainingFragment"
+        tools:layout="@layout/fragment_training">
     </fragment>
 
     <fragment
