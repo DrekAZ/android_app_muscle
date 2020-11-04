@@ -30,6 +30,12 @@
         android:id="@+id/fragment_training"
         android:name="com.drekaz.muscle.ui.training.TrainingFragment"
         tools:layout="@layout/fragment_training">
+        <argument
+            android:name="menu_element"
+            app:argType="String"
+            android:defaultValue=""
+            />
+
     </fragment>
 
     <fragment
