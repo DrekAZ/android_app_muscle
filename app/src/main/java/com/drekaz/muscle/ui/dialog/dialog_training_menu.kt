@@ -21,7 +21,6 @@ class DialogTrainingMenu(private val menu: String) : DialogFragment() {
         val builder = AlertDialog.Builder(requireContext()).apply {
             setTitle(menu)
             setView(gifView)
-            //Glide.with(context).load(R.raw.pushup).override(480,270).into(gifView)
             selectDesc(context, menu, gifView)
             setPositiveButton("OK", DialogInterface.OnClickListener { dialog, which ->
                 val action = TrainingMenuFragmentDirections.actionMenuTraining(menuElement = menu)

@@ -27,10 +27,6 @@ class HomeFragment : Fragment() {
 
         val normalText : TextView = view.findViewById(R.id.normal_mode)
         normalText.setOnClickListener{
-            /*val transaction = activity?.supportFragmentManager?.beginTransaction()?.apply {
-                replace(R.id.container, TrainingMenuFragment())
-                addToBackStack(null)
-            }*/
             findNavController().navigate(R.id.action_home_menu)
         }
         val coopText : TextView = view.findViewById(R.id.coop_mode)
