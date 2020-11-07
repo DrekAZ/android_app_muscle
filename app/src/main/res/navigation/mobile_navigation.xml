@@ -32,8 +32,8 @@
         tools:layout="@layout/fragment_training">
         <argument
             android:name="menu_element"
-            app:argType="String"
-            android:defaultValue=""
+            app:argType="string"
+            android:defaultValue="default"
             />
 
     </fragment>

@@ -8,5 +8,32 @@
     <string name="coop_mode">協力トレーニング</string>
     <string name="battle_mode">対戦トレーニング</string>
 
-    <string name="desc_pushup">TEST</string>
+    <string-array name="menus">
+        <item>腕立て伏せ</item>
+        <item>プランク</item>
+        <item>クランチ</item>
+        <item>スクワット</item>
+    </string-array>
+    
+    <string-array name="desc_pushup">
+        <item>
+            体を真っ直ぐにする
+        </item>
+        <item>
+            胸を張りながら、腕を肩幅より少し広く伸ばす
+        </item>
+        <item>
+            スマホを胸の辺りに置く
+        </item>
+    </string-array>
+    <string-array name="desc_plank">
+        <item>TEST2</item>
+    </string-array>
+    <string-array name="desc_crunch">
+        <item>ETST</item>
+    </string-array>
+    <string-array name="desc_squat">
+        <item>TEST</item>
+    </string-array>
+
 </resources>
