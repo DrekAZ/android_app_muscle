@@ -64,7 +64,6 @@ class TrainingFragment : Fragment(), SensorEventListener {
         when(requestCode) {
             200 -> if(resultCode == Activity.RESULT_OK) {
                 pickerArray = data?.getIntArrayExtra("picker")!!
-                counterViewModel.setRestTimeMax(pickerArray[2])
                 val descDialog = DialogTrainingDesc(menuElement).apply {
                     setTargetFragment(this@TrainingFragment, 201)
                 }
@@ -112,10 +111,12 @@ class TrainingFragment : Fragment(), SensorEventListener {
 
         sensorManager.unregisterListener(this)
         counterViewModel.changeRestState()
+        counterViewModel.setRestTimeMax(pickerArray[2])
         val timer = object: CountDownTimer(msec, 100L) {
             override fun onTick(millisUntilFinished: Long) {
                 val time = floor(millisUntilFinished/1000.0).toInt()
-                counterViewModel.setRestTime(time)
+                counterViewModel.setRestTime(pickerArray[2]-time)
+                //println(pickerArray[2] - time)
             }
             override fun onFinish() {
                 finishTimer()

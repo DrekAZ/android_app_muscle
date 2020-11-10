@@ -11,7 +11,7 @@ import androidx.fragment.app.DialogFragment
 import com.drekaz.muscle.R
 import kotlinx.android.synthetic.main.dialog_number_picker.view.*
 
-class DialogTrainingSelect() : DialogFragment() {
+class DialogTrainingSelect : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val pickerArray = intArrayOf(1,1,10)
