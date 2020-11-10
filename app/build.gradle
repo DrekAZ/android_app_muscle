@@ -2,10 +2,16 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: "androidx.navigation.safeargs.kotlin"
+apply plugin: "kotlin-kapt"
 
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
+
+    dataBinding {
+        //noinspection DataBindingWithoutKapt
+        enabled true
+    }
 
     defaultConfig {
         applicationId "com.drekaz.muscle"

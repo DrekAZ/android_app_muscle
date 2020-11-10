@@ -8,6 +8,13 @@
     <string name="coop_mode">協力トレーニング</string>
     <string name="battle_mode">対戦トレーニング</string>
 
+    <string name="sets">セット数</string>
+    <string name="times">1セットの回数</string>
+    <string name="rest">休憩時間</string>
+    <string name="sets_unit">セット</string>
+    <string name="times_unit">回</string>
+    <string name="rest_unit">秒</string>
+
     <string-array name="menus">
         <item>腕立て伏せ</item>
         <item>プランク</item>
