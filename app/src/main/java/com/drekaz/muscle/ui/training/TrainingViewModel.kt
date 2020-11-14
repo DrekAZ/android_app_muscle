@@ -1,9 +1,9 @@
-package com.drekaz.muscle.training_ViewModel
+package com.drekaz.muscle.ui.training
 
 import androidx.lifecycle.*
 import kotlin.math.max
 
-class CounterViewModel: ViewModel() {
+class TrainingViewModel: ViewModel() {
     val counter: MutableLiveData<Int> = MutableLiveData<Int>(0)
     val setNum: MutableLiveData<Int> = MutableLiveData<Int>(0)
     val restTimeMax: MutableLiveData<Int> = MutableLiveData<Int>(10)

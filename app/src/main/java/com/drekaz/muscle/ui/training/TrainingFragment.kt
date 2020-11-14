@@ -17,7 +17,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.drekaz.muscle.R
 import com.drekaz.muscle.databinding.FragmentTrainingBinding
-import com.drekaz.muscle.training_ViewModel.CounterViewModel
 import com.drekaz.muscle.ui.dialog.DialogTrainingDesc
 import com.drekaz.muscle.ui.dialog.DialogTrainingSelect
 import kotlin.math.floor
@@ -25,7 +24,7 @@ import kotlin.math.floor
 class TrainingFragment : Fragment(), SensorEventListener {
     private lateinit var menuElement: String
     private lateinit var pickerArray: IntArray
-    private val counterViewModel: CounterViewModel by viewModels()
+    private val trainingViewModel: TrainingViewModel by viewModels()
     private lateinit var sensorManager: SensorManager
     private var proximity: Sensor? = null
 
@@ -35,7 +34,7 @@ class TrainingFragment : Fragment(), SensorEventListener {
         savedInstanceState: Bundle?
     ): View? {
         val binding = FragmentTrainingBinding.inflate(inflater, container, false)
-        binding.vm= counterViewModel
+        binding.vm= trainingViewModel
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
@@ -92,30 +91,30 @@ class TrainingFragment : Fragment(), SensorEventListener {
     override fun onSensorChanged(event: SensorEvent?) {
         val value = event?.values?.get(0)
         if (value!! == 0.0f) {
-            counterViewModel.countUp()
-            if(counterViewModel.counter.value == pickerArray[1]) {
-                if(counterViewModel.setNum.value == pickerArray[0] && counterViewModel.counter.value == pickerArray[1]) {
+            trainingViewModel.countUp()
+            if(trainingViewModel.counter.value == pickerArray[1]) {
+                if(trainingViewModel.setNum.value == pickerArray[0] && trainingViewModel.counter.value == pickerArray[1]) {
                     // intent
                     sensorManager.unregisterListener(this)
                 } else {
-                    counterViewModel.resetCounter()
-                    counterViewModel.countUpSet()
-                    restTimer(requireView().findViewById(R.id.time))
+                    trainingViewModel.resetCounter()
+                    trainingViewModel.countUpSet()
+                    restTimer()
                 }
             }
         }
     }
 
-    private fun restTimer(timerText: TextView) {
+    private fun restTimer() {
         val msec = (pickerArray[2] * 1000).toLong()
 
         sensorManager.unregisterListener(this)
-        counterViewModel.changeRestState()
-        counterViewModel.setRestTimeMax(pickerArray[2])
-        val timer = object: CountDownTimer(msec, 100L) {
+        trainingViewModel.changeRestState()
+        trainingViewModel.setRestTimeMax(pickerArray[2])
+        object: CountDownTimer(msec, 100L) {
             override fun onTick(millisUntilFinished: Long) {
                 val time = floor(millisUntilFinished/1000.0).toInt()
-                counterViewModel.setRestTime(pickerArray[2]-time)
+                trainingViewModel.setRestTime(pickerArray[2]-time)
                 //println(pickerArray[2] - time)
             }
             override fun onFinish() {
@@ -127,7 +126,7 @@ class TrainingFragment : Fragment(), SensorEventListener {
 
     fun finishTimer() {
         sensorManager.registerListener(this, proximity, SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_UI)
-        counterViewModel.changeRestState()
+        trainingViewModel.changeRestState()
     }
 
 }

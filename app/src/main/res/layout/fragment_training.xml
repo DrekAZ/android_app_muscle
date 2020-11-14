@@ -8,7 +8,7 @@
         <import type="android.view.View" />
         <variable
             name="vm"
-            type="com.drekaz.muscle.training_ViewModel.CounterViewModel" />
+            type="com.drekaz.muscle.ui.training.TrainingViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
