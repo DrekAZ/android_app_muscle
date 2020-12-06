@@ -41,7 +41,7 @@ class DialogTrainingSelect : DialogFragment() {
         val builder = AlertDialog.Builder(requireContext()).apply {
             isCancelable = false
             setView(pickerLayout)
-            setPositiveButton("OK", DialogInterface.OnClickListener { dialog, which ->
+            setPositiveButton("OK", DialogInterface.OnClickListener { _, _ ->
                 val fragment = targetFragment
                 if(fragment != null) {
                     val data = Intent().putExtra("picker", pickerArray)
@@ -55,5 +55,12 @@ class DialogTrainingSelect : DialogFragment() {
     override fun onPause() {
         super.onPause()
         dismiss()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        /*val width = (resources.displayMetrics.widthPixels * 0.95).toInt()
+        val height = (resources.displayMetrics.heightPixels * 0.95).toInt()
+        dialog?.window?.setLayout(width, height)*/
     }
 }

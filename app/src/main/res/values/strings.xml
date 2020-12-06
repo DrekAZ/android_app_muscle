@@ -4,6 +4,23 @@
     <string name="title_dashboard">ダッシュボード</string>
     <string name="title_setting">設定</string>
 
+    <string name="no_data">データなし</string>
+
+    <string name="name">ニックネーム</string>
+    <string name="example_name">たかし</string>
+    <string name="height">身長 (必須項目)</string>
+    <string name="example_height">172.0</string>
+    <string name="weight">体重 (必須項目)</string>
+    <string name="example_weight">60.0</string>
+    <string name="sex">性別 (必須項目)</string>
+    <string name="male_button">男性</string>
+    <string name="female_button">女性</string>
+    <string name="other_button">その他</string>
+    <string name="fat_percent">体脂肪率</string>
+    <string name="example_fat">18</string>
+    <string name="percent">%</string>
+    <string name="submit">決定</string>
+
     <string name="normal_mode">一人でトレーニング</string>
     <string name="coop_mode">協力トレーニング</string>
     <string name="battle_mode">対戦トレーニング</string>
@@ -43,4 +60,7 @@
         <item>TEST</item>
     </string-array>
 
+    <string name="today_label_calories">今日の消費カロリー :</string>
+    <string name="today_label_weight">体重  :</string>
+    <string name="today_label_bmi">BMI(肥満度)  :</string>
 </resources>

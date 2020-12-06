@@ -12,13 +12,18 @@ import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.drekaz.muscle.R
+import com.drekaz.muscle.database.TrainingDatabase
+import com.drekaz.muscle.database.UserDatabase
+import com.drekaz.muscle.database.entity.UserEntity
 import com.drekaz.muscle.databinding.FragmentTrainingBinding
 import com.drekaz.muscle.ui.dialog.DialogTrainingDesc
+import com.drekaz.muscle.ui.dialog.DialogTrainingResult
 import com.drekaz.muscle.ui.dialog.DialogTrainingSelect
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlin.math.floor
 
 class TrainingFragment : Fragment(), SensorEventListener {
@@ -27,6 +32,10 @@ class TrainingFragment : Fragment(), SensorEventListener {
     private val trainingViewModel: TrainingViewModel by viewModels()
     private lateinit var sensorManager: SensorManager
     private var proximity: Sensor? = null
+    private lateinit var userDatabase: UserDatabase
+    private lateinit var trainingDatabase: TrainingDatabase
+    private var canSensing = false
+    private var myData: UserEntity? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,19 +51,29 @@ class TrainingFragment : Fragment(), SensorEventListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        userDatabase = UserDatabase.getInstance(requireContext())
+        trainingDatabase = TrainingDatabase.getInstance(requireContext())
+
+        runBlocking {
+            GlobalScope.launch {
+                myData = trainingViewModel.readMyData(userDatabase)
+            }.join()
+        }
+
         menuElement = TrainingFragmentArgs.fromBundle(arguments ?: return).menuElement
         val selectDialog = DialogTrainingSelect().apply {
             setTargetFragment(this@TrainingFragment, 200)
             arguments = Bundle()
         }
+        // Intent Dialog Select
         selectDialog.show(parentFragmentManager, null)
 
         sensorManager = view.context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
         proximity = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY)
-        if( !sensorManager.getSensorList(Sensor.TYPE_PROXIMITY).isNullOrEmpty() ) {
+        /*if( !sensorManager.getSensorList(Sensor.TYPE_PROXIMITY).isNullOrEmpty() ) {
             // 最大sensorDelayの時間まで待たれる
             sensorManager.registerListener(this, proximity, SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_UI)
-        }
+        }*/
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -70,12 +89,18 @@ class TrainingFragment : Fragment(), SensorEventListener {
             }
             201 -> if(resultCode == Activity.RESULT_OK) {
                 println("201 OK")
+                canSensing = true
+                if( !sensorManager.getSensorList(Sensor.TYPE_PROXIMITY).isNullOrEmpty() ) {
+                    // 最大sensorDelayの時間まで待たれる
+                    sensorManager.registerListener(this, proximity, SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_UI)
+                }
             }
         }
     }
 
     override fun onResume() {
         super.onResume()
+        canSensing = true
         proximity?.also {
             sensorManager.registerListener(this, proximity, SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_UI)
         }
@@ -83,6 +108,7 @@ class TrainingFragment : Fragment(), SensorEventListener {
 
     override fun onPause() {
         super.onPause()
+        canSensing = false
         sensorManager.unregisterListener(this)
     }
 
@@ -90,12 +116,16 @@ class TrainingFragment : Fragment(), SensorEventListener {
 
     override fun onSensorChanged(event: SensorEvent?) {
         val value = event?.values?.get(0)
-        if (value!! == 0.0f) {
+        if (value!! == 0.0f && canSensing) {
             trainingViewModel.countUp()
             if(trainingViewModel.counter.value == pickerArray[1]) {
                 if(trainingViewModel.setNum.value == pickerArray[0] && trainingViewModel.counter.value == pickerArray[1]) {
-                    // intent
+                    // END
                     sensorManager.unregisterListener(this)
+                    trainingViewModel.saveData(menuElement, trainingDatabase)
+                    // Intent Dialog Result
+                    val resultDialog = DialogTrainingResult(menuElement, trainingViewModel.counter.value!!, trainingViewModel.setNum.value!!, myData!!.weight, myData!!.fat)
+                    resultDialog.show(parentFragmentManager, null)
                 } else {
                     trainingViewModel.resetCounter()
                     trainingViewModel.countUpSet()
@@ -106,16 +136,15 @@ class TrainingFragment : Fragment(), SensorEventListener {
     }
 
     private fun restTimer() {
-        val msec = (pickerArray[2] * 1000).toLong()
+        val mSec = (pickerArray[2] * 1000).toLong()
 
         sensorManager.unregisterListener(this)
         trainingViewModel.changeRestState()
         trainingViewModel.setRestTimeMax(pickerArray[2])
-        object: CountDownTimer(msec, 100L) {
+        object: CountDownTimer(mSec, 100L) {
             override fun onTick(millisUntilFinished: Long) {
                 val time = floor(millisUntilFinished/1000.0).toInt()
                 trainingViewModel.setRestTime(pickerArray[2]-time)
-                //println(pickerArray[2] - time)
             }
             override fun onFinish() {
                 finishTimer()

@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.drekaz.muscle.R
+import com.github.mikephil.charting.charts.LineChart
 
 class HomeFragment : Fragment() {
     companion object {
@@ -30,6 +31,8 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.action_home_menu)
         }
         val coopText : TextView = view.findViewById(R.id.coop_mode)
+        coopText.setOnClickListener{
+        }
         val battleText : TextView = view.findViewById(R.id.battle_mode)
     }
 }
