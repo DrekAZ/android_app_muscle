@@ -13,13 +13,13 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="12" />
-                            <option name="y" value="12" />
+                            <option name="x" value="-348" />
+                            <option name="y" value="-524" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_training_result">
+                            <entry key="action_training_home">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -34,8 +34,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="12" />
-                            <option name="y" value="12" />
+                            <option name="x" value="144" />
+                            <option name="y" value="-614" />
                           </Point>
                         </option>
                         <option name="myPositions">
@@ -50,7 +50,7 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="fragment_training_result">
+                  <entry key="graph">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
@@ -79,12 +79,17 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="12" />
-                            <option name="y" value="12" />
+                            <option name="x" value="-45" />
+                            <option name="y" value="7" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_home_graph">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_home_menu">
                               <value>
                                 <LayoutPositions />
@@ -100,8 +105,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="12" />
-                            <option name="y" value="12" />
+                            <option name="x" value="545" />
+                            <option name="y" value="10" />
                           </Point>
                         </option>
                       </LayoutPositions>
