@@ -17,4 +17,10 @@ interface CaloriesDao {
 
     @Query("select * from calories where date = :day")
     suspend fun readDayCalories(day: LocalDate): CaloriesEntity
+
+    @Query("select * from calories where :beforeDay >= date and date <= :nowDay ")
+    suspend fun readWeekCalories(beforeDay: LocalDate, nowDay: LocalDate): List<CaloriesEntity>
+
+    @Query("select * from calories where :firstDay >= date and date <= :lastDay")
+    suspend fun readMonthCalories(firstDay: LocalDate, lastDay: LocalDate): List<CaloriesEntity>
 }

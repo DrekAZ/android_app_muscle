@@ -8,8 +8,5 @@ import androidx.room.PrimaryKey
 data class UserEntity(
     @PrimaryKey val id: Int,
     @ColumnInfo(name = "name") val name: String,
-    @ColumnInfo(name = "height") val height: Float,
-    @ColumnInfo(name = "weight") val weight: Float,
-    @ColumnInfo(name = "fat") val fat: Float,
     @ColumnInfo(name = "sex") val sex: Int,
 )
