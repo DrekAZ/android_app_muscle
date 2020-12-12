@@ -3,9 +3,12 @@ package com.drekaz.muscle.ui.first_launch
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.drekaz.muscle.database.BodyInfoDatabase
 import com.drekaz.muscle.database.UserDatabase
+import com.drekaz.muscle.database.entity.BodyInfoEntity
 import com.drekaz.muscle.database.entity.UserEntity
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 
 class FirstLaunchViewModel : ViewModel() {
     val name = MutableLiveData("")
@@ -31,12 +34,14 @@ class FirstLaunchViewModel : ViewModel() {
     fun checkSex(): Boolean {
         return (sex.value!! == 1 || sex.value!! == 2 || sex.value!! == 9)
     }
-    fun saveData(database: UserDatabase) {
-        val userEntity = UserEntity(0,name.value!!,height.value!!,weight.value!!,fat.value!!,sex.value!!)
+    fun saveData(userDatabase: UserDatabase, bodyInfoDatabase: BodyInfoDatabase) {
+        val userEntity = UserEntity(0,name.value!!, sex.value!!)
+        val bodyInfoEntity = BodyInfoEntity(0,height.value!!,weight.value!!,fat.value!!, LocalDate.now())
         viewModelScope.launch {
-            val dao = database.userDao()
-            dao.insertUser(userEntity)
-            database.close()
+            userDatabase.userDao().insertUser(userEntity)
+            userDatabase.close()
+            bodyInfoDatabase.bodyInfoDao().insertBodyInfo(bodyInfoEntity)
+            bodyInfoDatabase.close()
         }
     }
 }

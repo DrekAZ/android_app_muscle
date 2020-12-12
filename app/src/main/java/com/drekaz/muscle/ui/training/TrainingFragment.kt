@@ -14,8 +14,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.drekaz.muscle.database.BodyInfoDatabase
 import com.drekaz.muscle.database.TrainingDatabase
 import com.drekaz.muscle.database.UserDatabase
+import com.drekaz.muscle.database.entity.BodyInfoEntity
 import com.drekaz.muscle.database.entity.UserEntity
 import com.drekaz.muscle.databinding.FragmentTrainingBinding
 import com.drekaz.muscle.ui.dialog.DialogTrainingDesc
@@ -32,16 +34,19 @@ class TrainingFragment : Fragment(), SensorEventListener {
     private val trainingViewModel: TrainingViewModel by viewModels()
     private lateinit var sensorManager: SensorManager
     private var proximity: Sensor? = null
-    private lateinit var userDatabase: UserDatabase
+    private lateinit var bodyInfoDatabase: BodyInfoDatabase
     private lateinit var trainingDatabase: TrainingDatabase
     private var canSensing = false
-    private var myData: UserEntity? = null
+    private var bodyInfoData: BodyInfoEntity? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        bodyInfoDatabase = BodyInfoDatabase.getInstance(requireContext())
+        trainingDatabase = TrainingDatabase.getInstance(requireContext())
+
         val binding = FragmentTrainingBinding.inflate(inflater, container, false)
         binding.vm= trainingViewModel
         binding.lifecycleOwner = viewLifecycleOwner
@@ -51,12 +56,9 @@ class TrainingFragment : Fragment(), SensorEventListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        userDatabase = UserDatabase.getInstance(requireContext())
-        trainingDatabase = TrainingDatabase.getInstance(requireContext())
-
         runBlocking {
             GlobalScope.launch {
-                myData = trainingViewModel.readMyData(userDatabase)
+                bodyInfoData = trainingViewModel.readBodyInfoData(bodyInfoDatabase)
             }.join()
         }
 
@@ -124,7 +126,7 @@ class TrainingFragment : Fragment(), SensorEventListener {
                     sensorManager.unregisterListener(this)
                     trainingViewModel.saveData(menuElement, trainingDatabase)
                     // Intent Dialog Result
-                    val resultDialog = DialogTrainingResult(menuElement, trainingViewModel.counter.value!!, trainingViewModel.setNum.value!!, myData!!.weight, myData!!.fat)
+                    val resultDialog = DialogTrainingResult(menuElement, trainingViewModel.counter.value!!, trainingViewModel.setNum.value!!, bodyInfoData!!.weight, bodyInfoData!!.fat)
                     resultDialog.show(parentFragmentManager, null)
                 } else {
                     trainingViewModel.resetCounter()

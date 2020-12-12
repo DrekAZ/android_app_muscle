@@ -2,8 +2,10 @@ package com.drekaz.muscle.ui.training
 
 import android.util.Log
 import androidx.lifecycle.*
+import com.drekaz.muscle.database.BodyInfoDatabase
 import com.drekaz.muscle.database.TrainingDatabase
 import com.drekaz.muscle.database.UserDatabase
+import com.drekaz.muscle.database.entity.BodyInfoEntity
 import com.drekaz.muscle.database.entity.TrainingEntity
 import com.drekaz.muscle.database.entity.UserEntity
 import kotlinx.coroutines.launch
@@ -46,9 +48,9 @@ class TrainingViewModel: ViewModel() {
         }
     }
 
-    suspend fun readMyData(database: UserDatabase): UserEntity? {
-        val dao = database.userDao()
-        val myData = dao.readMyData(0)
+    suspend fun readBodyInfoData(database: BodyInfoDatabase): BodyInfoEntity {
+        val dao = database.bodyInfoDao()
+        val myData = dao.readTodayBody()
         database.close()
         return myData
     }

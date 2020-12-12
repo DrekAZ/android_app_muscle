@@ -35,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/today_label_calories"
-                android:text="@{@string/today_label_weight +`  `+ (vm.userData.weight == 0.0f ? @string/no_data : String.valueOf(vm.userData.weight))}"
+                android:text="@{@string/today_label_weight +`  `+ (vm.dayBodyInfo.weight == 0.0f ? @string/no_data : String.valueOf(vm.dayBodyInfo.weight))}"
                 android:textSize="@dimen/font_normal"
                 android:layout_margin="@dimen/spacing_normal"
                 />
@@ -50,11 +50,18 @@
                 />
         </RelativeLayout>
 
-        <com.drekaz.muscle.view.CaloriesGraphView
-            android:id="@+id/graph_calories"
-            android:layout_width="wrap_content"
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/spacing_small">
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/graph_line"
+            android:layout_width="match_parent"
+            android:minHeight="@dimen/graph_height"
             android:layout_height="wrap_content"
             />
+
+        </ScrollView>
 
     </LinearLayout>
 </layout>

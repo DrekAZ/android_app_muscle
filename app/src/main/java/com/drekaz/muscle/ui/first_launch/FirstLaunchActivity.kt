@@ -8,20 +8,23 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.databinding.DataBindingUtil
 import com.drekaz.muscle.MainActivity
 import com.drekaz.muscle.R
+import com.drekaz.muscle.database.BodyInfoDatabase
 import com.drekaz.muscle.database.UserDatabase
 import com.drekaz.muscle.databinding.ActivityFirstLaunchBinding
 
 class FirstLaunchActivity : AppCompatActivity() {
 
     private val viewModel = FirstLaunchViewModel()
-    private lateinit var database: UserDatabase
+    private lateinit var userDatabase: UserDatabase
+    private lateinit var bodyInfoDatabase: BodyInfoDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = DataBindingUtil.setContentView<ActivityFirstLaunchBinding>(this, R.layout.activity_first_launch)
         binding.vm = viewModel
         binding.lifecycleOwner = this
-        database = UserDatabase.getInstance(this)
+        userDatabase = UserDatabase.getInstance(this)
+        bodyInfoDatabase = BodyInfoDatabase.getInstance(this)
 
         binding.inputName.doAfterTextChanged {
             viewModel.name.value = it!!.toString()
@@ -59,7 +62,7 @@ class FirstLaunchActivity : AppCompatActivity() {
             } else if(!viewModel.checkSex()) {
                 Toast.makeText(this, "性別が未入力です", Toast.LENGTH_SHORT).show()
             } else {
-                viewModel.saveData(database)
+                viewModel.saveData(userDatabase, bodyInfoDatabase)
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
             }
