@@ -53,7 +53,7 @@ class DashboardViewModel : ViewModel() {
         if(weekCalories.value == null){
            //weekCalories.value = MutableList(7) { initDatas.caloriesTestData }
             val l = LocalDate.now()
-           weekCalories.value = MutableList(7) { CaloriesEntity(0,1f,l) }
+           weekCalories.value = MutableList(7) { CaloriesEntity(0,0f, l) }
         }
         if(weekCalories.value!!.size < 7) {
             for(i in weekCalories.value!!.size..6 ) {
@@ -65,7 +65,7 @@ class DashboardViewModel : ViewModel() {
     fun readDayBodyInfo(database: BodyInfoDatabase) {
         viewModelScope.launch {
             val dao = database.bodyInfoDao()
-            dayBodyInfo.value = dao.readTodayBody()
+            dayBodyInfo.value = dao.readLatestBody()
             database.close()
         }
     }
@@ -78,7 +78,7 @@ class DashboardViewModel : ViewModel() {
         }
         if(weekBodyInfo.value == null){
             val l = LocalDate.now()
-            weekBodyInfo.value = MutableList(7) { BodyInfoEntity(0,0f,10.2f,0f,l) }
+            weekBodyInfo.value = MutableList(7) { BodyInfoEntity(0,0f,0f,0f, l) }
         }
         else if(weekBodyInfo.value!!.size < 7) {
             for(i in weekBodyInfo.value!!.size..6 ) {

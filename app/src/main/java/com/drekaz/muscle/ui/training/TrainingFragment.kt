@@ -64,7 +64,7 @@ class TrainingFragment : Fragment(), SensorEventListener {
 
         menuElement = TrainingFragmentArgs.fromBundle(arguments ?: return).menuElement
         val selectDialog = DialogTrainingSelect().apply {
-            setTargetFragment(this@TrainingFragment, 200)
+            setTargetFragment(this@TrainingFragment, 1)
             arguments = Bundle()
         }
         // Intent Dialog Select
@@ -82,15 +82,15 @@ class TrainingFragment : Fragment(), SensorEventListener {
         super.onActivityResult(requestCode, resultCode, data)
 
         when(requestCode) {
-            200 -> if(resultCode == Activity.RESULT_OK) {
+            1 -> if(resultCode == Activity.RESULT_OK) {
                 pickerArray = data?.getIntArrayExtra("picker")!!
                 val descDialog = DialogTrainingDesc(menuElement).apply {
-                    setTargetFragment(this@TrainingFragment, 201)
+                    setTargetFragment(this@TrainingFragment, 2)
                 }
                 descDialog.show(parentFragmentManager, null)
             }
-            201 -> if(resultCode == Activity.RESULT_OK) {
-                println("201 OK")
+            2 -> if(resultCode == Activity.RESULT_OK) {
+                println("2 OK")
                 canSensing = true
                 if( !sensorManager.getSensorList(Sensor.TYPE_PROXIMITY).isNullOrEmpty() ) {
                     // 最大sensorDelayの時間まで待たれる

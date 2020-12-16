@@ -35,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/today_label_calories"
-                android:text="@{@string/today_label_weight +`  `+ (vm.dayBodyInfo.weight == 0.0f ? @string/no_data : String.valueOf(vm.dayBodyInfo.weight))}"
+                android:text="@{@string/today_label_weight +`  `+ (vm.dayBodyInfo.weight == 0.0f ? @string/no_data : String.valueOf(vm.dayBodyInfo.weight)) + ` kg`}"
                 android:textSize="@dimen/font_normal"
                 android:layout_margin="@dimen/spacing_normal"
                 />

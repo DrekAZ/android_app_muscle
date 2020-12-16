@@ -1,22 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.setting.SettingFragment">
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="vm"
+            type="com.drekaz.muscle.ui.setting.SettingViewModel" />
+    </data>
 
-    <TextView
-        android:id="@+id/text_setting"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="match_parent"
+        tools:context=".ui.setting.SettingFragment"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/header_user_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/SettingHeader"
+            android:text="@string/header_user_info"
+            />
+        <TextView
+            android:id="@+id/item_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/SettingItem"
+            android:text="@{@string/item_name +`: `+ (vm.userData.name)}"
+            />
+        <TextView
+            android:id="@+id/item_sex"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/item_name"
+            style="@style/SettingItem"
+            android:text="@{@string/item_sex +`: `+ vm.sexNumToStr(vm.userData.sex)}"
+            />
+        <View style="@style/Divider" />
+        <TextView
+            android:id="@+id/header_body_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/item_sex"
+            style="@style/SettingHeader"
+            android:text="@string/header_body_info"
+            />
+        <TextView
+            android:id="@+id/item_chg_body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/header_body_info"
+            style="@style/SettingItem"
+            android:text="@string/item_chg_body"
+            />
+        <View style="@style/Divider" />
+    </LinearLayout>
+</layout>

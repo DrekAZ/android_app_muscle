@@ -50,7 +50,7 @@ class TrainingViewModel: ViewModel() {
 
     suspend fun readBodyInfoData(database: BodyInfoDatabase): BodyInfoEntity {
         val dao = database.bodyInfoDao()
-        val myData = dao.readTodayBody()
+        val myData = dao.readLatestBody()
         database.close()
         return myData
     }

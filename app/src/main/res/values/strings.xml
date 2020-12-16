@@ -63,4 +63,14 @@
     <string name="today_label_calories">今日の消費カロリー :</string>
     <string name="today_label_weight">体重  :</string>
     <string name="today_label_bmi">BMI(肥満度)  :</string>
+
+    <string name="header_user_info">ユーザ情報</string>
+    <string name="header_body_info">身体情報</string>
+    <string name="item_name">名前</string>
+    <string name="item_sex">性別</string>
+    <string name="item_chg_body">身長/体重/体脂肪の変更</string>
+    
+    <string name="label_height">身長</string>
+    <string name="label_weight">体重</string>
+    <string name="label_fat">体脂肪率</string>
 </resources>

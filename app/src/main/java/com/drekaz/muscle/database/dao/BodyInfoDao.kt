@@ -16,8 +16,11 @@ interface BodyInfoDao {
     @Delete
     suspend fun deleteBodyInfo(body: BodyInfoEntity)
 
-    @Query("select * from body_info where rowid = last_insert_rowid()")
-    suspend fun readTodayBody(): BodyInfoEntity
+    @Query("select * from body_info order by id desc limit 1")
+    suspend fun readLatestBody(): BodyInfoEntity
+
+    @Query("select * from body_info where date = :today")
+    suspend fun readTodayBody(today: LocalDate): BodyInfoEntity
 
     @Query("select * from body_info where :beforeDay >= date and date <= :nowDay ")
     suspend fun readWeekBody(beforeDay: LocalDate, nowDay: LocalDate): List<BodyInfoEntity>
