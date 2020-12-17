@@ -26,8 +26,6 @@ class SettingViewModel : ViewModel() {
         }
     }
 
-    /// SettingFragmentからViewModelのUserDataを書き換え、
-    /// updateUser(userData)としないのはViewModelだから
     fun updateUserData(database: UserDatabase, updateData: UserEntity) {
         viewModelScope.launch {
             val dao = database.userDao()

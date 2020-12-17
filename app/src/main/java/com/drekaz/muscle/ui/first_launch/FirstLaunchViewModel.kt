@@ -39,9 +39,7 @@ class FirstLaunchViewModel : ViewModel() {
         val bodyInfoEntity = BodyInfoEntity(0,height.value!!,weight.value!!,fat.value!!, LocalDate.now())
         viewModelScope.launch {
             userDatabase.userDao().insertUser(userEntity)
-            userDatabase.close()
             bodyInfoDatabase.bodyInfoDao().insertBodyInfo(bodyInfoEntity)
-            bodyInfoDatabase.close()
         }
     }
 }

@@ -2,66 +2,72 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.dashboard.DashboardFragment">
     <data>
+        <import type="android.view.View" />
         <variable
             name="vm"
             type="com.drekaz.muscle.ui.dashboard.DashboardViewModel" />
     </data>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context=".ui.dashboard.DashboardFragment">
-
-        <RelativeLayout
-            android:id="@+id/inner_text"
+        android:fillViewport="true">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/border"
-            android:layout_margin="@dimen/spacing_small"
-            tools:ignore="UselessParent">
-            <TextView
-                android:id="@+id/today_label_calories"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{@string/today_label_calories +`  `+ (String.valueOf(vm.dayCalories.calories) + ` kcal`)}"
-                android:textSize="@dimen/font_normal"
-                android:layout_margin="@dimen/spacing_normal"
-                />
-            <TextView
-                android:id="@+id/today_label_weight"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/today_label_calories"
-                android:text="@{@string/today_label_weight +`  `+ (vm.dayBodyInfo.weight == 0.0f ? @string/no_data : String.valueOf(vm.dayBodyInfo.weight)) + ` kg`}"
-                android:textSize="@dimen/font_normal"
-                android:layout_margin="@dimen/spacing_normal"
-                />
-            <TextView
-                android:id="@+id/today_label_bmi"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/today_label_weight"
-                android:text="@{@string/today_label_bmi +`  `+ (vm.bmi == 0.0f ? @string/no_data : String.valueOf(vm.bmi))}"
-                android:textSize="@dimen/font_normal"
-                android:layout_margin="@dimen/spacing_normal"
-                />
-        </RelativeLayout>
+            android:orientation="vertical">
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/spacing_small">
-        <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/graph_line"
-            android:layout_width="match_parent"
-            android:minHeight="@dimen/graph_height"
-            android:layout_height="wrap_content"
-            />
+            <RelativeLayout
+                android:id="@+id/inner_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                android:layout_margin="@dimen/spacing_small"
+                tools:ignore="UselessParent">
+                <TextView
+                    android:id="@+id/today_label_calories"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/today_label_calories +`  `+ (String.valueOf(vm.dayCalories.calories) + ` kcal`)}"
+                    android:textSize="@dimen/font_normal"
+                    android:layout_margin="@dimen/spacing_normal"
+                    />
+                <TextView
+                    android:id="@+id/today_label_weight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/today_label_calories"
+                    android:text="@{@string/today_label_weight +`  `+ (vm.latestBodyInfo.weight == 0.0f ? @string/no_data : String.valueOf(vm.latestBodyInfo.weight)) + ` kg`}"
+                    android:textSize="@dimen/font_normal"
+                    android:layout_margin="@dimen/spacing_normal"
+                    />
+                <TextView
+                    android:id="@+id/today_label_bmi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/today_label_weight"
+                    android:text="@{@string/today_label_bmi +`  `+ (vm.bmi == 0.0f ? @string/no_data : String.valueOf(vm.bmi))}"
+                    android:textSize="@dimen/font_normal"
+                    android:layout_margin="@dimen/spacing_normal"
+                    />
+            </RelativeLayout>
 
-        </ScrollView>
-
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/graph_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/graph_height"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:layout_marginBottom="@dimen/spacing_normal"
+                    android:minHeight="@dimen/graph_height"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </layout>

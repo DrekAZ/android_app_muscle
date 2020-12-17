@@ -1,5 +1,6 @@
 package com.drekaz.muscle
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -12,6 +13,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.drekaz.muscle.database.UserDatabase
 import com.drekaz.muscle.database.entity.UserEntity
+import com.drekaz.muscle.ui.first_launch.FirstLaunchActivity
 import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
@@ -30,24 +32,24 @@ class MainActivity : AppCompatActivity() {
             }.join()
         }
 
-        /*if (myData == null) {
+        if (myData == null) {
             val intent = Intent(this, FirstLaunchActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             startActivity(intent)
-        } else {*/
+        } else {
             val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
             val navController = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)!!
                 .findNavController()
             val appBarConfiguration = AppBarConfiguration(
                 setOf(
-                    R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_setting
+                    R.id.fragment_training_menu, R.id.navigation_dashboard, R.id.navigation_setting
                 )
             )
             setupActionBarWithNavController(navController, appBarConfiguration)
             navView.setupWithNavController(navController)
 
             setFullscreen(navController, navView)
-        //}
+        }
     }
 
     override fun onSupportNavigateUp() = findNavController(R.id.nav_host_fragment).navigateUp()

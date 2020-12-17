@@ -37,6 +37,7 @@ class LineGraphView(private val view: View) {
         lineChart.description.isEnabled = false
         lineChart.axisLeft.axisMinimum = 0f
         lineChart.axisRight.axisMinimum = 0f
+        lineChart.setTouchEnabled(false)
 
         lineChart.invalidate()
     }

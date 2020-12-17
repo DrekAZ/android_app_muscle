@@ -11,49 +11,39 @@ import com.drekaz.muscle.database.UserDatabase
 import com.drekaz.muscle.database.entity.BodyInfoEntity
 import com.drekaz.muscle.database.entity.CaloriesEntity
 import com.drekaz.muscle.database.entity.UserEntity
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import java.time.LocalDate
+import kotlin.coroutines.coroutineContext
 
 class DashboardViewModel : ViewModel() {
     private val initDatas = InitEntity()
     val userData = MutableLiveData<UserEntity>()
     val dayCalories = MutableLiveData<CaloriesEntity>()
     val weekCalories = MutableLiveData<MutableList<CaloriesEntity>>()
-    val dayBodyInfo = MutableLiveData<BodyInfoEntity>()
+    val latestBodyInfo = MutableLiveData<BodyInfoEntity>()
     val weekBodyInfo = MutableLiveData<MutableList<BodyInfoEntity>>()
     val bmi = MutableLiveData<Float>()
 
-    fun readUserData(database: UserDatabase) {
-        runBlocking {
-            viewModelScope.launch {
-                val dao = database.userDao()
-                userData.value = dao.readMyData(0)
-                database.close()
-            }
-        }
+    suspend fun readUserData(database: UserDatabase) = withContext(coroutineContext) {
+        val dao = database.userDao()
+        userData.value = dao.readMyData(0)
     }
 
-    fun readDayCalories(database: CaloriesDatabase) {
+    suspend fun readDayCalories(database: CaloriesDatabase) = withContext(coroutineContext) {
         val date = LocalDate.now()
-        viewModelScope.launch {
-            val dao = database.caloriesDao()
-            dayCalories.value = dao.readDayCalories(date)
-            database.close()
-        }
+        val dao = database.caloriesDao()
+        dayCalories.value = dao.readDayCalories(date)
         if(dayCalories.value == null) dayCalories.value = initDatas.caloriesTestData
     }
-    fun readWeekCalories(database: CaloriesDatabase) {
+    suspend fun readWeekCalories(database: CaloriesDatabase) = withContext(coroutineContext) {
         val now = LocalDate.now()
-        viewModelScope.launch {
-            val dao = database.caloriesDao()
-            weekCalories.value = dao.readWeekCalories(now.minusDays(7), now).toMutableList()
-            database.close()
-        }
+        val dao = database.caloriesDao()
+        weekCalories.value = dao.readWeekCalories(now.minusDays(7), now).toMutableList()
         if(weekCalories.value == null){
-           //weekCalories.value = MutableList(7) { initDatas.caloriesTestData }
-            val l = LocalDate.now()
-           weekCalories.value = MutableList(7) { CaloriesEntity(0,0f, l) }
+            weekCalories.value = MutableList(7) { initDatas.caloriesTestData }
         }
         if(weekCalories.value!!.size < 7) {
             for(i in weekCalories.value!!.size..6 ) {
@@ -62,23 +52,16 @@ class DashboardViewModel : ViewModel() {
         }
     }
 
-    fun readDayBodyInfo(database: BodyInfoDatabase) {
-        viewModelScope.launch {
-            val dao = database.bodyInfoDao()
-            dayBodyInfo.value = dao.readLatestBody()
-            database.close()
-        }
+    suspend fun readDayBodyInfo(database: BodyInfoDatabase) = withContext(coroutineContext) {
+        val dao = database.bodyInfoDao()
+        latestBodyInfo.value = dao.readLatestBody()
     }
-    fun readWeekBodyInfo(database: BodyInfoDatabase) {
+    suspend fun readWeekBodyInfo(database: BodyInfoDatabase) = withContext(coroutineContext) {
         val now = LocalDate.now()
-        viewModelScope.launch {
-            val dao = database.bodyInfoDao()
-            weekBodyInfo.value = dao.readWeekBody(now.minusDays(7), now).toMutableList()
-            database.close()
-        }
+        val dao = database.bodyInfoDao()
+        weekBodyInfo.value = dao.readWeekBody(now.minusDays(7), now).toMutableList()
         if(weekBodyInfo.value == null){
-            val l = LocalDate.now()
-            weekBodyInfo.value = MutableList(7) { BodyInfoEntity(0,0f,0f,0f, l) }
+            weekBodyInfo.value = MutableList(7) { initDatas.bodyInfoTestData }
         }
         else if(weekBodyInfo.value!!.size < 7) {
             for(i in weekBodyInfo.value!!.size..6 ) {
@@ -87,9 +70,13 @@ class DashboardViewModel : ViewModel() {
         }
     }
 
-    fun calcBmi() {
-        if(userData.value != null) {
-            bmi.postValue(CalcData().calcBMI(dayBodyInfo.value!!.weight, dayBodyInfo.value!!.height))
+    suspend fun calcBmi() = withContext(coroutineContext){
+        println(userData.value)
+        println(latestBodyInfo.value)
+        println(weekBodyInfo.value)
+        println(weekCalories.value)
+        if(latestBodyInfo.value != null) {
+            bmi.postValue(CalcData().calcBMI(latestBodyInfo.value!!.weight, latestBodyInfo.value!!.height * 0.01f ))
         }
     }
 }

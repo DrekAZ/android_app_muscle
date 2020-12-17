@@ -11,6 +11,8 @@ import com.drekaz.muscle.database.CaloriesDatabase
 import com.drekaz.muscle.database.UserDatabase
 import com.drekaz.muscle.databinding.FragmentDashboardBinding
 import com.drekaz.muscle.view.LineGraphView
+import kotlinx.coroutines.*
+import kotlin.coroutines.coroutineContext
 
 class DashboardFragment : Fragment() {
     companion object {
@@ -41,11 +43,14 @@ class DashboardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        dashboardViewModel.readUserData(userDatabase)
-        dashboardViewModel.readDayBodyInfo(bodyInfoDatabase)
-        dashboardViewModel.readWeekBodyInfo(bodyInfoDatabase)
-        dashboardViewModel.readWeekCalories(caloriesDatabase)
-        dashboardViewModel.calcBmi()
+        runBlocking {
+            dashboardViewModel.readUserData(userDatabase)
+            dashboardViewModel.readDayBodyInfo(bodyInfoDatabase)
+            dashboardViewModel.readWeekBodyInfo(bodyInfoDatabase)
+            dashboardViewModel.readDayCalories(caloriesDatabase)
+            dashboardViewModel.readWeekCalories(caloriesDatabase)
+            dashboardViewModel.calcBmi()
+        }
 
         lineGraph = LineGraphView(view)
         lineGraph.setGraph(dashboardViewModel.weekCalories.value!!, dashboardViewModel.weekBodyInfo.value!!)

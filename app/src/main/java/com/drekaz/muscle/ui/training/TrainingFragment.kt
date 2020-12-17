@@ -15,10 +15,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.drekaz.muscle.database.BodyInfoDatabase
+import com.drekaz.muscle.database.CaloriesDatabase
 import com.drekaz.muscle.database.TrainingDatabase
-import com.drekaz.muscle.database.UserDatabase
 import com.drekaz.muscle.database.entity.BodyInfoEntity
-import com.drekaz.muscle.database.entity.UserEntity
 import com.drekaz.muscle.databinding.FragmentTrainingBinding
 import com.drekaz.muscle.ui.dialog.DialogTrainingDesc
 import com.drekaz.muscle.ui.dialog.DialogTrainingResult
@@ -26,6 +25,8 @@ import com.drekaz.muscle.ui.dialog.DialogTrainingSelect
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 import kotlin.math.floor
 
 class TrainingFragment : Fragment(), SensorEventListener {
@@ -36,8 +37,10 @@ class TrainingFragment : Fragment(), SensorEventListener {
     private var proximity: Sensor? = null
     private lateinit var bodyInfoDatabase: BodyInfoDatabase
     private lateinit var trainingDatabase: TrainingDatabase
+    private lateinit var caloriesDatabase: CaloriesDatabase
     private var canSensing = false
-    private var bodyInfoData: BodyInfoEntity? = null
+    private var trainingStartTime: Long = 0L
+    private var descFinished = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,6 +49,7 @@ class TrainingFragment : Fragment(), SensorEventListener {
     ): View? {
         bodyInfoDatabase = BodyInfoDatabase.getInstance(requireContext())
         trainingDatabase = TrainingDatabase.getInstance(requireContext())
+        caloriesDatabase = CaloriesDatabase.getInstance(requireContext())
 
         val binding = FragmentTrainingBinding.inflate(inflater, container, false)
         binding.vm= trainingViewModel
@@ -57,9 +61,7 @@ class TrainingFragment : Fragment(), SensorEventListener {
         super.onViewCreated(view, savedInstanceState)
 
         runBlocking {
-            GlobalScope.launch {
-                bodyInfoData = trainingViewModel.readBodyInfoData(bodyInfoDatabase)
-            }.join()
+            trainingViewModel.readBodyInfoData(bodyInfoDatabase)
         }
 
         menuElement = TrainingFragmentArgs.fromBundle(arguments ?: return).menuElement
@@ -72,10 +74,6 @@ class TrainingFragment : Fragment(), SensorEventListener {
 
         sensorManager = view.context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
         proximity = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY)
-        /*if( !sensorManager.getSensorList(Sensor.TYPE_PROXIMITY).isNullOrEmpty() ) {
-            // 最大sensorDelayの時間まで待たれる
-            sensorManager.registerListener(this, proximity, SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_UI)
-        }*/
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -90,12 +88,15 @@ class TrainingFragment : Fragment(), SensorEventListener {
                 descDialog.show(parentFragmentManager, null)
             }
             2 -> if(resultCode == Activity.RESULT_OK) {
-                println("2 OK")
                 canSensing = true
+                descFinished = data?.getBooleanExtra("finished", false)!!
+
                 if( !sensorManager.getSensorList(Sensor.TYPE_PROXIMITY).isNullOrEmpty() ) {
                     // 最大sensorDelayの時間まで待たれる
                     sensorManager.registerListener(this, proximity, SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_UI)
                 }
+
+                trainingStartTime = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
             }
         }
     }
@@ -103,8 +104,10 @@ class TrainingFragment : Fragment(), SensorEventListener {
     override fun onResume() {
         super.onResume()
         canSensing = true
-        proximity?.also {
-            sensorManager.registerListener(this, proximity, SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_UI)
+        if(descFinished) {
+            proximity?.also {
+                sensorManager.registerListener(this, proximity, SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_UI)
+            }
         }
     }
 
@@ -123,10 +126,13 @@ class TrainingFragment : Fragment(), SensorEventListener {
             if(trainingViewModel.counter.value == pickerArray[1]) {
                 if(trainingViewModel.setNum.value == pickerArray[0] && trainingViewModel.counter.value == pickerArray[1]) {
                     // END
+                    val trainingHour = (LocalDateTime.now().toEpochSecond(ZoneOffset.UTC) - trainingStartTime - (pickerArray[2] * pickerArray[1])) / 3600f
+                    println(trainingHour)
+
                     sensorManager.unregisterListener(this)
-                    trainingViewModel.saveData(menuElement, trainingDatabase)
+                    trainingViewModel.saveData(menuElement, trainingDatabase, caloriesDatabase, trainingHour)
                     // Intent Dialog Result
-                    val resultDialog = DialogTrainingResult(menuElement, trainingViewModel.counter.value!!, trainingViewModel.setNum.value!!, bodyInfoData!!.weight, bodyInfoData!!.fat)
+                    val resultDialog = DialogTrainingResult(menuElement, trainingViewModel.counter.value!!, trainingViewModel.setNum.value!!, trainingViewModel.myBodyInfo.value!!.weight, trainingHour)
                     resultDialog.show(parentFragmentManager, null)
                 } else {
                     trainingViewModel.resetCounter()
@@ -146,7 +152,7 @@ class TrainingFragment : Fragment(), SensorEventListener {
         object: CountDownTimer(mSec, 100L) {
             override fun onTick(millisUntilFinished: Long) {
                 val time = floor(millisUntilFinished/1000.0).toInt()
-                trainingViewModel.setRestTime(pickerArray[2]-time)
+                trainingViewModel.setRestTime(pickerArray[2] - time)
             }
             override fun onFinish() {
                 finishTimer()

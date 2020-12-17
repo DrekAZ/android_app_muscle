@@ -22,6 +22,6 @@ interface BodyInfoDao {
     @Query("select * from body_info where date = :today")
     suspend fun readTodayBody(today: LocalDate): BodyInfoEntity
 
-    @Query("select * from body_info where :beforeDay >= date and date <= :nowDay ")
+    @Query("select * from body_info where :beforeDay < date and date <= :nowDay ")
     suspend fun readWeekBody(beforeDay: LocalDate, nowDay: LocalDate): List<BodyInfoEntity>
 }

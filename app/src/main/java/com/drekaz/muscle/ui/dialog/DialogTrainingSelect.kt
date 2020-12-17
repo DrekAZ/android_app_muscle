@@ -32,7 +32,7 @@ class DialogTrainingSelect : DialogFragment() {
         }
         pickerLayout.rest_picker.apply {
             minValue = 10
-            maxValue = 90
+            maxValue = 180
             setOnValueChangedListener { _, _, newVal ->
                 pickerArray[2] = newVal
             }

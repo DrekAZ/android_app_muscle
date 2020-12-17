@@ -1,7 +1,9 @@
 package com.drekaz.muscle.ui.dialog
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
 import androidx.fragment.app.DialogFragment
@@ -19,6 +21,11 @@ class DialogTrainingDesc(private val menu: String) : DialogFragment() {
             setMultiChoiceItems(selectDesc(menu), checkedItems) { _, which, isChecked ->
                 checkedItems[which] = isChecked
                 if(checkedItems.all { it }) {
+                    val fragment = targetFragment
+                    if(fragment != null) {
+                        val data = Intent().putExtra("finished", true)
+                        fragment.onActivityResult(targetRequestCode, Activity.RESULT_OK, data)
+                    }
                     dismiss()
                 }
             }

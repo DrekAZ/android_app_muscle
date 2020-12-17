@@ -20,6 +20,7 @@ class DialogChangeRadioButton(private val num: Int): DialogFragment() {
             setPositiveButton("OK") { _, _ ->
                 val fragment = targetFragment
                 if(fragment != null) {
+                    selectNum = if(selectNum == 2) 9 else selectNum + 1
                     val data = Intent().putExtra("radio", selectNum)
                     fragment.onActivityResult(targetRequestCode, Activity.RESULT_OK, data)
                 }
