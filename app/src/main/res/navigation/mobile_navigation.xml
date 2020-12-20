@@ -36,9 +36,9 @@
             android:defaultValue="default"
             />
         <action
-            android:id="@+id/action_training_home"
-            app:destination="@id/navigation_home"
-            app:popUpTo="@id/navigation_home"
+            android:id="@+id/action_training_menu"
+            app:destination="@id/fragment_training_menu"
+            app:popUpTo="@id/fragment_training_menu"
             />
     </fragment>
 

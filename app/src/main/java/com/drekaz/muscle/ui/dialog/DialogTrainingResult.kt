@@ -27,10 +27,11 @@ class DialogTrainingResult(private val menu: String, private val counter: Int, p
             消費カロリー  約 ${calcData.calcCalorie(menu, kg, hour)}
             """
         val builder = AlertDialog.Builder(requireContext()).apply {
+            isCancelable = false
             setTitle("結果")
             setMessage(message)
             setPositiveButton("トレーニング画面に戻る", DialogInterface.OnClickListener { dialog, which ->
-                findNavController().navigate(R.id.action_training_home)
+                findNavController().navigate(R.id.action_training_menu)
             })
         }
         return builder.create()
