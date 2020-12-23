@@ -11,6 +11,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.drekaz.muscle.database.BodyInfoDatabase
+import com.drekaz.muscle.database.CaloriesDatabase
 import com.drekaz.muscle.database.UserDatabase
 import com.drekaz.muscle.database.entity.UserEntity
 import com.drekaz.muscle.ui.first_launch.FirstLaunchActivity
@@ -24,12 +26,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val database = UserDatabase.getInstance(this)
+        val userDatabase = UserDatabase.getInstance(this)
+        val bodyInfoDatabase = BodyInfoDatabase.getInstance(this)
+        val caloriesDatabase = CaloriesDatabase.getInstance(this)
+
         var myData: UserEntity? = null
         runBlocking {
             GlobalScope.launch {
-                myData = viewModel.readMyData(database)
+                myData = viewModel.readMyData(userDatabase)
             }.join()
+
+            viewModel.insertInitCalories(caloriesDatabase)
+            viewModel.insertInitBodyInfo(bodyInfoDatabase)
         }
 
         if (myData == null) {
