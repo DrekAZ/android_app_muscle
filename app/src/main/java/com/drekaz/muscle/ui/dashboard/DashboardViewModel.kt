@@ -21,7 +21,7 @@ import kotlin.coroutines.coroutineContext
 class DashboardViewModel : ViewModel() {
     private val initDatas = InitEntity()
     val userData = MutableLiveData<UserEntity>()
-    val dayCalories = MutableLiveData<CaloriesEntity>()
+    val todayCalories = MutableLiveData<CaloriesEntity>()
     val weekCalories = MutableLiveData<MutableList<CaloriesEntity>>()
     val latestBodyInfo = MutableLiveData<BodyInfoEntity>()
     val weekBodyInfo = MutableLiveData<MutableList<BodyInfoEntity>>()
@@ -32,11 +32,11 @@ class DashboardViewModel : ViewModel() {
         userData.value = dao.readMyData(0)
     }
 
-    suspend fun readDayCalories(database: CaloriesDatabase) = withContext(coroutineContext) {
+    suspend fun readTodayCalories(database: CaloriesDatabase) = withContext(coroutineContext) {
         val date = LocalDate.now()
         val dao = database.caloriesDao()
-        dayCalories.value = dao.readDayCalories(date)
-        if(dayCalories.value == null) dayCalories.value = initDatas.caloriesTestData
+        todayCalories.value = dao.readDayCalories(date)
+        if(todayCalories.value == null) todayCalories.value = initDatas.caloriesTestData
     }
     suspend fun readWeekCalories(database: CaloriesDatabase) = withContext(coroutineContext) {
         val now = LocalDate.now()
@@ -52,10 +52,11 @@ class DashboardViewModel : ViewModel() {
         }
     }
 
-    suspend fun readDayBodyInfo(database: BodyInfoDatabase) = withContext(coroutineContext) {
+    suspend fun latestBodyInfo(database: BodyInfoDatabase) = withContext(coroutineContext) {
         val dao = database.bodyInfoDao()
         latestBodyInfo.value = dao.readLatestBody()
     }
+
     suspend fun readWeekBodyInfo(database: BodyInfoDatabase) = withContext(coroutineContext) {
         val now = LocalDate.now()
         val dao = database.bodyInfoDao()

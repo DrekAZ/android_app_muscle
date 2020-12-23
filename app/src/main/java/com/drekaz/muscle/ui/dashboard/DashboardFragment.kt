@@ -45,9 +45,9 @@ class DashboardFragment : Fragment() {
 
         runBlocking {
             dashboardViewModel.readUserData(userDatabase)
-            dashboardViewModel.readDayBodyInfo(bodyInfoDatabase)
+            dashboardViewModel.latestBodyInfo(bodyInfoDatabase)
             dashboardViewModel.readWeekBodyInfo(bodyInfoDatabase)
-            dashboardViewModel.readDayCalories(caloriesDatabase)
+            dashboardViewModel.readTodayCalories(caloriesDatabase)
             dashboardViewModel.readWeekCalories(caloriesDatabase)
             dashboardViewModel.calcBmi()
         }

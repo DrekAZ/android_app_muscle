@@ -31,7 +31,7 @@
                     android:id="@+id/today_label_calories"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{@string/today_label_calories +`  `+ (String.valueOf(vm.dayCalories.calories) + ` kcal`)}"
+                    android:text="@{@string/today_label_calories +`  `+ (String.valueOf(vm.todayCalories.calories) + ` kcal`)}"
                     android:textSize="@dimen/font_normal"
                     android:layout_margin="@dimen/spacing_normal"
                     />
