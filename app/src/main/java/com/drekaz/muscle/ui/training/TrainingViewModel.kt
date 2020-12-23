@@ -1,16 +1,13 @@
 package com.drekaz.muscle.ui.training
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.drekaz.muscle.calc.CalcData
 import com.drekaz.muscle.database.BodyInfoDatabase
 import com.drekaz.muscle.database.CaloriesDatabase
 import com.drekaz.muscle.database.TrainingDatabase
-import com.drekaz.muscle.database.UserDatabase
 import com.drekaz.muscle.database.entity.BodyInfoEntity
 import com.drekaz.muscle.database.entity.CaloriesEntity
 import com.drekaz.muscle.database.entity.TrainingEntity
-import com.drekaz.muscle.database.entity.UserEntity
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
@@ -46,13 +43,18 @@ class TrainingViewModel: ViewModel() {
 
     fun saveData(menu: String, trainingDatabase: TrainingDatabase, caloriesDatabase: CaloriesDatabase, trainingHour: Float) {
         val trainingEntity = TrainingEntity(0, menu, counter.value!!, setNum.value!!, LocalDate.now(), 0)
-        val caloriesEntity = CaloriesEntity(0, CalcData().calcCalorie(menu, myBodyInfo.value!!.weight, trainingHour), LocalDate.now())
         viewModelScope.launch {
             val trainingDao = trainingDatabase.trainingDao()
             trainingDao.insertTraining(trainingEntity)
             val caloriesDao = caloriesDatabase.caloriesDao()
-            caloriesDao.insertCalories(caloriesEntity)
-            Log.v("TAG", "after insert ${trainingDao.readAll().toString()}")
+            val latestCalories = caloriesDao.readLatestCalories()
+            val now = LocalDate.now()
+            val calories = CalcData().calcCalorie(menu, myBodyInfo.value!!.weight, trainingHour)
+            if(latestCalories != null && latestCalories.date == now) {
+                caloriesDao.updateCalories(CaloriesEntity(latestCalories.id, calories + latestCalories.calories, now))
+            } else {
+                caloriesDao.insertCalories(CaloriesEntity(0, calories, now))
+            }
         }
     }
 
