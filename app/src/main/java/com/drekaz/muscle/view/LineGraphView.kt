@@ -18,9 +18,9 @@ class LineGraphView(private val view: View) {
     private lateinit var lineChart: LineChart
 
     fun setGraph(caloriesList: List<CaloriesEntity>, weightList: List<BodyInfoEntity>) {
-        val x = dataToX(caloriesList)
-        val caloriesLineDataSet = setCaloriesData(caloriesList)
-        val weightLineDataSet = setWeightData(weightList)
+        val x = dataToX(caloriesList, weightList)
+        val caloriesLineDataSet = setCaloriesData(caloriesList, x)
+        val weightLineDataSet = setWeightData(weightList, x)
 
         val lineDataSets = mutableListOf<ILineDataSet>()
         lineDataSets.add(caloriesLineDataSet)
@@ -42,25 +42,52 @@ class LineGraphView(private val view: View) {
         lineChart.invalidate()
     }
 
-    private fun dataToX(dataList: List<CaloriesEntity>): List<String> {
+    private fun dataToX(caloriesList: List<CaloriesEntity>, weightList: List<BodyInfoEntity>): List<String> {
         val formatter = DateTimeFormatter.ofPattern("MM/dd")
         var today = LocalDate.now()
-        val label = dataList.map { it.date.format(formatter) }.toMutableList()
+        val x =
+            if(caloriesList[0].date < weightList[0].date) caloriesList.map { it.date.format(formatter) }.toMutableList()
+            else weightList.map { it.date.format(formatter) }.toMutableList()
         /// データが7つない場合今日の日付が2つ以上存在 -> 明日以降の日付に変更
-        val index = label.indexOf( today.format(formatter) )
-        for(i in index + 1 .. label.lastIndex) {
+        val index = x.indexOf( today.format(formatter) )
+        for(i in index + 1 .. x.lastIndex) {
             today = today.plusDays(1)
-            label[i] = today.format(formatter)
+            x[i] = today.format(formatter)
         }
 
-        return label
+        return x
     }
 
-    private fun dataToCalories(dataList: List<CaloriesEntity>): List<Float> {
-        return dataList.map { it.calories }
+    private fun dataToCalories(dataList: List<CaloriesEntity>, x: List<String>): List<Float> {
+        val formatter = DateTimeFormatter.ofPattern("MM/dd")
+        val list = mutableListOf<Float>()
+        var i = 0
+        x.forEach {
+            if(dataList[i].date.format(formatter) == it) {
+                list.add(dataList[i].calories)
+                i ++
+            } else {
+                list.add(0f)
+            }
+        }
+
+        return list.toList()
     }
-    private fun dataToWeight(dataList: List<BodyInfoEntity>): List<Float> {
-        return dataList.map { it.weight }
+    private fun dataToWeight(dataList: List<BodyInfoEntity>, x: List<String>): List<Float> {
+        val formatter = DateTimeFormatter.ofPattern("MM/dd")
+        val list = mutableListOf<Float>()
+        println(x)
+        var i = 0
+        x.forEach {
+            if(dataList[i].date.format(formatter) == it) {
+                list.add(dataList[i].weight)
+                i ++
+            } else {
+                list.add(0f)
+            }
+        }
+
+        return list.toList()
     }
 
     private fun setData(y: List<Float>): List<Entry> {
@@ -72,21 +99,21 @@ class LineGraphView(private val view: View) {
         return entryList
     }
 
-    private fun setCaloriesData(dataList: List<CaloriesEntity>): LineDataSet {
-        val y = dataToCalories(dataList)
+    private fun setCaloriesData(dataList: List<CaloriesEntity>, x: List<String>): LineDataSet {
+        val y = dataToCalories(dataList, x)
         val entryList = setData(y)
 
-        val lineDataSet = LineDataSet(entryList, "消費カロリー")
+        val lineDataSet = LineDataSet(entryList, "消費カロリー (kcal)")
         lineDataSet.color = Color.parseColor("#F57C00")
         lineDataSet.valueTextSize = 13f
 
         return lineDataSet
     }
-    private fun setWeightData(dataList: List<BodyInfoEntity>): LineDataSet {
-        val y = dataToWeight(dataList)
+    private fun setWeightData(dataList: List<BodyInfoEntity>, x: List<String>): LineDataSet {
+        val y = dataToWeight(dataList, x)
         val entryList = setData(y)
 
-        val lineDataSet = LineDataSet(entryList, "体重")
+        val lineDataSet = LineDataSet(entryList, "体重 (kg)")
         lineDataSet.color = Color.parseColor("#03A9F4")
         lineDataSet.valueTextSize = 13f
 
