@@ -15,6 +15,9 @@ interface CaloriesDao {
     @Delete
     suspend fun deleteCalories(calories: CaloriesEntity)
 
+    @Query("select * from calories order by id desc limit 1")
+    suspend fun readLatestCalories(): CaloriesEntity
+
     @Query("select * from calories where date = :day")
     suspend fun readDayCalories(day: LocalDate): CaloriesEntity
 
