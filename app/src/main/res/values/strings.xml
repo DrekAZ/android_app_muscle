@@ -35,9 +35,9 @@
     <string-array name="menus">
         <item>腕立て伏せ</item>
         <item>上体起こし</item>
-        <item>ウォーキング・ランニング</item>
+        <!-- <item>ウォーキング・ランニング</item>
         <item>クランチ</item>
-        <item>スクワット</item>
+        <item>スクワット</item> -->
     </string-array>
 
     <string name="desc_pushup">
