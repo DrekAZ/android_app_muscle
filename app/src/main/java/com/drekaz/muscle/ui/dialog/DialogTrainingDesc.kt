@@ -7,7 +7,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
 import androidx.fragment.app.DialogFragment
-import com.bumptech.glide.Glide
 import com.drekaz.muscle.R
 
 class DialogTrainingDesc(private val menu: String) : DialogFragment() {
@@ -29,7 +28,6 @@ class DialogTrainingDesc(private val menu: String) : DialogFragment() {
                     dismiss()
                 }
             }
-            Glide.with(context).load(R.raw.pushup).override(960,540).into(gifView)
         }
         return builder.create()
     }
@@ -48,10 +46,11 @@ class DialogTrainingDesc(private val menu: String) : DialogFragment() {
 
     private fun selectDesc(element: String): Array<String> {
         when (element) {
-            "腕立て伏せ" -> return resources.getStringArray(R.array.desc_pushup)
-            "プランク"   -> return resources.getStringArray(R.array.desc_plank)
-            "クランチ"   -> return resources.getStringArray(R.array.desc_crunch)
+            "腕立て伏せ" -> return resources.getStringArray(R.array.howto_pushup)
+            "上体起こし"  -> return resources.getStringArray(R.array.howto_situp)
+            "ウォーキング・ランニング" -> return resources.getStringArray(R.array.howto_run)
+            "クランチ"   -> return resources.getStringArray(R.array.howto_crunch)
         }
-        return resources.getStringArray(R.array.desc_squat) // スクワット
+        return resources.getStringArray(R.array.howto_squat)
     }
 }

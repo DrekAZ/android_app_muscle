@@ -64,8 +64,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun setFullscreen(navController: NavController, navView: BottomNavigationView) {
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
-            if(destination.id == R.id.fragment_training) supportActionBar?.hide()
-            navView.visibility = if(destination.id == R.id.fragment_training) View.GONE else View.VISIBLE
+            if(destination.id == R.id.fragment_sensor_training || destination.id == R.id.fragment_gps_training) supportActionBar?.hide()
+            navView.visibility = if(destination.id == R.id.fragment_sensor_training || destination.id == R.id.fragment_gps_training) View.GONE else View.VISIBLE
         }
     }
 }

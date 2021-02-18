@@ -21,15 +21,33 @@
         android:name="com.drekaz.muscle.ui.training_menu.TrainingMenuFragment"
         tools:layout="@layout/fragment_training_menu">
         <action
-            android:id="@+id/action_menu_training"
-            app:destination="@id/fragment_training"
-            app:popUpTo="@id/navigation_home"
+            android:id="@+id/action_menu_sensor"
+            app:destination="@id/fragment_sensor_training"
+            />
+        <action
+            android:id="@+id/action_menu_gps"
+            app:destination="@+id/fragment_gps_training"
             />
     </fragment>
     <fragment
-        android:id="@+id/fragment_training"
-        android:name="com.drekaz.muscle.ui.training.TrainingFragment"
-        tools:layout="@layout/fragment_training">
+        android:id="@+id/fragment_sensor_training"
+        android:name="com.drekaz.muscle.ui.training.TrainingSensorFragment"
+        tools:layout="@layout/fragment_sensor_training">
+        <argument
+            android:name="menu_element"
+            app:argType="string"
+            android:defaultValue="default"
+            />
+        <action
+            android:id="@+id/action_training_menu"
+            app:destination="@id/fragment_training_menu"
+            app:popUpTo="@id/fragment_training_menu"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_gps_training"
+        android:name="com.drekaz.muscle.ui.training.TrainingGPSFragment"
+        tools:layout="@layout/fragment_sensor_training">
         <argument
             android:name="menu_element"
             app:argType="string"

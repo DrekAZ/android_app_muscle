@@ -90,6 +90,8 @@ lint/tmp/
 
 
 # add original setting
+app/src/debug/
+app/src/release/
 #app/src/main/res/drawable/
 #app/src/main/res/mipmap/
 #app/src/main/res/raw/

@@ -34,29 +34,42 @@
 
     <string-array name="menus">
         <item>腕立て伏せ</item>
-        <item>プランク</item>
+        <item>上体起こし</item>
+        <item>ウォーキング・ランニング</item>
         <item>クランチ</item>
         <item>スクワット</item>
     </string-array>
-    
-    <string-array name="desc_pushup">
-        <item>
-            体を真っ直ぐにする
-        </item>
-        <item>
-            胸を張りながら、腕を肩幅より少し広く伸ばす
-        </item>
-        <item>
-            スマホを胸の辺りに置く
-        </item>
+
+    <string name="desc_pushup">
+        胸・腕の筋肉トレーニング
+    </string>
+    <string-array name="howto_pushup">
+        <item>体を真っ直ぐにする</item>
+        <item>胸を張りながら、腕を肩幅より少し広く伸ばす</item>
+        <item>スマホを胸の辺りに置き、腕を曲げる</item>
     </string-array>
-    <string-array name="desc_plank">
-        <item>TEST2</item>
+
+    <string name="desc_situp">
+        腹の筋肉トレーニング
+    </string>
+    <string-array name="howto_situp">
+        <item>膝を曲げて仰向けになって寝る</item>
+        <item>胸の前で手を組む</item>
+        <item>スマホを太腿の辺りに置き、上半身を太腿へ近づける</item>
     </string-array>
-    <string-array name="desc_crunch">
+
+    <string name="desc_run">
+        有酸素運動
+    </string>
+    <string-array name="howto_run">
+        <item>靴を履いて外に出る</item>
+    </string-array>
+
+    <string-array name="howto_crunch">
         <item>ETST</item>
     </string-array>
-    <string-array name="desc_squat">
+
+    <string-array name="howto_squat">
         <item>TEST</item>
     </string-array>
 

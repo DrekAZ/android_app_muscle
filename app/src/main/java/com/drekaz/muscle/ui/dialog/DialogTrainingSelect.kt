@@ -56,11 +56,4 @@ class DialogTrainingSelect : DialogFragment() {
         super.onPause()
         dismiss()
     }
-
-    override fun onStart() {
-        super.onStart()
-        /*val width = (resources.displayMetrics.widthPixels * 0.95).toInt()
-        val height = (resources.displayMetrics.heightPixels * 0.95).toInt()
-        dialog?.window?.setLayout(width, height)*/
-    }
 }

@@ -1,7 +1,7 @@
 package com.drekaz.muscle.ui.training
 
 import androidx.lifecycle.*
-import com.drekaz.muscle.calc.CalcData
+import com.drekaz.muscle.calc.CalcHealthIndex
 import com.drekaz.muscle.database.BodyInfoDatabase
 import com.drekaz.muscle.database.CaloriesDatabase
 import com.drekaz.muscle.database.TrainingDatabase
@@ -49,7 +49,7 @@ class TrainingViewModel: ViewModel() {
             val caloriesDao = caloriesDatabase.caloriesDao()
             val latestCalories = caloriesDao.readLatestCalories()
             val now = LocalDate.now()
-            val calories = CalcData().calcCalorie(menu, myBodyInfo.value!!.weight, trainingHour)
+            val calories = CalcHealthIndex().calcCalorie(menu, myBodyInfo.value!!.weight, trainingHour)
             if(latestCalories != null && latestCalories.date == now) {
                 caloriesDao.updateCalories(CaloriesEntity(latestCalories.id, calories + latestCalories.calories, now))
             } else {
