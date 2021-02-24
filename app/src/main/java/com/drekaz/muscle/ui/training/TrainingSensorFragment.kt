@@ -85,7 +85,6 @@ class TrainingSensorFragment : Fragment(), SensorEventListener, InterfaceSensorP
                 showDialogFragment(DialogTrainingDesc(menuElement), null, 2)
             }
             2 -> if(resultCode == Activity.RESULT_OK) {
-                //descFinished = data?.getBooleanExtra("finished", false)!!
                 descFinished = true
 
                 if( !sensorManager.getSensorList(Sensor.TYPE_PROXIMITY).isNullOrEmpty() ) {
@@ -114,7 +113,6 @@ class TrainingSensorFragment : Fragment(), SensorEventListener, InterfaceSensorP
 
     override fun onSensorChanged(event: SensorEvent?) {
         val value = event?.values?.get(0)
-        println(value)
         if(countJudge(value, canSensing, menuElement)) {
             trainingViewModel.countUp()
 
@@ -135,7 +133,6 @@ class TrainingSensorFragment : Fragment(), SensorEventListener, InterfaceSensorP
         if(setter == finishSets) {
             // END
             val trainingHour = stopTrainingTimer(trainingStartTime, pickerArray[0], pickerArray[2])
-            println(trainingHour)
 
             enabledSensor(false)
             trainingViewModel.saveData(menuElement, trainingDatabase, caloriesDatabase, trainingHour)

@@ -37,20 +37,17 @@ class SettingViewModel : ViewModel() {
 
     fun updateBodyInfo(database: BodyInfoDatabase, arrayStr: Array<String>) {
         val insert = setBodyInfoEntity(database, arrayStr)
-        println(insert)
 
         /// id == 0 今日最初のデータ
         if(insert.id == 0) {
             viewModelScope.launch {
                 val dao = database.bodyInfoDao()
                 dao.insertBodyInfo(insert)
-                println("insert")
             }
         } else {
             viewModelScope.launch {
                 val dao = database.bodyInfoDao()
                 dao.updateBodyInfo(insert)
-                println("update")
             }
         }
 
@@ -80,7 +77,6 @@ class SettingViewModel : ViewModel() {
         runBlocking {
             latest = getLatestBodyInfo(database)
         }
-        println(latest)
 
         /// 最新のデータが今日の日付: 更新, 今日以外: 追加
         val id = if(latest.date.toEpochDay() == LocalDate.now().toEpochDay()) latest.id else 0

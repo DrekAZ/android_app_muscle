@@ -33,6 +33,5 @@ class HomeFragment : Fragment() {
         val coopText : TextView = view.findViewById(R.id.coop_mode)
         coopText.setOnClickListener{
         }
-        val battleText : TextView = view.findViewById(R.id.battle_mode)
     }
 }
